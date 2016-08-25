@@ -38,9 +38,6 @@ public class CustomIntentService extends IntentService {
                 .setVibrate(new long[] {5000,5000,5000,5000,5000})
                 .setCustomHeadsUpContentView(remoteView);
 
-                //.setCustomBigContentView(remoteView);
-                //.;
-
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         int temp = 001;
