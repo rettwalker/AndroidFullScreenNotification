@@ -1,35 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="650dp">
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="550dp"
+    >
 
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/imageView"
+        android:background="@drawable/alertmessage"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="151dp"
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:text="URGENT"
         android:id="@+id/urgentMessage"
-        android:layout_gravity="center_horizontal"
-        android:textSize="50dp"
+
+        android:textSize="30sp"
         android:textIsSelectable="false"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
         android:textColor="@color/abc_search_url_text_selected"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:layout_gravity="center_horizontal" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Approval is required!"
-        android:textSize="30dp"
+        android:textSize="25sp"
         android:id="@+id/textView2"
-        android:layout_gravity="center_horizontal"
-        android:padding="5dp"
-        android:textColor="@color/abc_search_url_text_selected"
-        android:textAlignment="center" />
 
+        android:padding="10dp"
+        android:textColor="@color/abc_search_url_text_selected"
+
+        android:textAlignment="center"
+
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="-5dp" />
 
 
 

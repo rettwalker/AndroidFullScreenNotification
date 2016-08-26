@@ -17,4 +17,8 @@ public class AlertMessage extends AppCompatActivity {
         getWindow().addFlags(flags);
         setContentView(R.layout.activity_alert_message);
     }
+    @Override
+    protected void onPause(){
+        super.onPause();
+    }
 }

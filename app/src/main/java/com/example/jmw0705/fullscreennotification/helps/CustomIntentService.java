@@ -29,13 +29,16 @@ public class CustomIntentService extends IntentService {
         //remoteView.setTextViewText(R.id.textView3,"TexT");
         Log.d(TAG,"GOT PASSED TO THE CORRECT INTENT");
         Intent newIntent = new Intent(this,AlertMessage.class);
-        PendingIntent pendingIntent = PendingIntent.getService(this,0,newIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getService(this,0,newIntent,0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setSmallIcon(R.drawable.icon)
+                .setOngoing(true)
+                .setCategory(Notification.CATEGORY_ALARM)
                 .setFullScreenIntent(pendingIntent,true)
                 .setContent(remoteView)
-                .setPriority(2)
-                .setVibrate(new long[] {5000,5000,5000,5000,5000})
+                .setContentIntent(pendingIntent)
+                .setPriority(Notification.PRIORITY_MAX)
+                .setVibrate(new long[] {500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500})
                 .setCustomHeadsUpContentView(remoteView);
 
 
