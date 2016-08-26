@@ -13,14 +13,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RemoteViews;
-
-import com.example.jmw0705.fullscreennotification.helps.CustomIntentService;
 
 public class MainActivity extends AppCompatActivity {
     final String TAG = "BOOOO";
-    NotificationCompat.Builder builder;
-    NotificationManager notificationManager;
+
 
 
     @Override
