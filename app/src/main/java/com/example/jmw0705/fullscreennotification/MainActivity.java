@@ -41,13 +41,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        not2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendNotification(R.layout.full_screen_notification_2);
+            }
+        });
+        not3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendNotification(R.layout.blank_full_screen);
+            }
+        });
+
     }
     public void sendNotification(int layoutToUse){
         RemoteViews remoteView = new RemoteViews("com.example.jmw0705.fullscreennotification",layoutToUse);
         Intent newIntent = new Intent(getBaseContext(),AlertMessage.class);
         PendingIntent pendingIntent = PendingIntent.getService(getBaseContext(),0,newIntent,0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext());
-        builder.setSmallIcon(R.drawable.icon)
+        builder.setSmallIcon(R.mipmap.ic_launcher)
                 .setOngoing(true)
                 .setCategory(Notification.CATEGORY_ALARM)
                 .setFullScreenIntent(pendingIntent,true)
@@ -58,6 +71,12 @@ public class MainActivity extends AppCompatActivity {
                 .setCustomHeadsUpContentView(remoteView);
 
 
+        /*builder.setContentText("asDFASDFASdf")
+                .setContentTitle("ASDFASDFASDF")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setPriority(Notification.PRIORITY_MAX)
+                .setVibrate(new long[] {500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500})
+                .setFullScreenIntent(pendingIntent,true);*/
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         int temp = 001;
         notificationManager.notify(temp,builder.build());
