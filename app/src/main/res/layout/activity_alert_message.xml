@@ -7,13 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.jmw0705.fullscreennotification.AlertMessage">
+    tools:context="com.example.jmw0705.fullscreennotification.AlertMessage"
+    android:background="#000000">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="WE DID IT!!!!  and HELLO WORLD!!!!@!"
-        android:id="@+id/textView"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
 </RelativeLayout>

@@ -19,6 +19,9 @@ import com.example.jmw0705.fullscreennotification.helps.CustomIntentService;
 
 public class MainActivity extends AppCompatActivity {
     final String TAG = "BOOOO";
+    NotificationCompat.Builder builder;
+    NotificationManager notificationManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,49 +40,30 @@ public class MainActivity extends AppCompatActivity {
         not1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendNotification(R.layout.full_screen_notificiation);
+                //Intent i = new Intent("com.example.jmw0705.fullscreennotification.USER_ACTION");
+                //sendBroadcast(i);
+                sendNotification();
             }
         });
 
-        not2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendNotification(R.layout.full_screen_notification_2);
-            }
-        });
-        not3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendNotification(R.layout.blank_full_screen);
-            }
-        });
 
     }
-    public void sendNotification(int layoutToUse){
-        RemoteViews remoteView = new RemoteViews("com.example.jmw0705.fullscreennotification",layoutToUse);
-        Intent newIntent = new Intent(getBaseContext(),AlertMessage.class);
-        PendingIntent pendingIntent = PendingIntent.getService(getBaseContext(),0,newIntent,0);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext());
-        builder.setSmallIcon(R.mipmap.ic_launcher)
-                .setOngoing(true)
-                .setCategory(Notification.CATEGORY_ALARM)
-                .setFullScreenIntent(pendingIntent,true)
-                .setContent(remoteView)
-                .setContentIntent(pendingIntent)
-                .setPriority(Notification.PRIORITY_MAX)
-                .setVibrate(new long[] {500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500})
-                .setCustomHeadsUpContentView(remoteView);
+    public void sendNotification(){
 
 
-        /*builder.setContentText("asDFASDFASdf")
-                .setContentTitle("ASDFASDFASDF")
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setPriority(Notification.PRIORITY_MAX)
-                .setVibrate(new long[] {500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500})
-                .setFullScreenIntent(pendingIntent,true);*/
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        int temp = 001;
-        notificationManager.notify(temp,builder.build());
+        new CountDownTimer(10000, 1000) {
+            @Override
+            public void onTick(long l) {
+                Log.d("TIMER","TIMER WORKING");
+            }
+
+            @Override
+            public void onFinish() {
+                Intent newIntent = new Intent(getBaseContext(),AlertMessage.class);
+                startActivity(newIntent);
+            }
+        }.start();
+
 
     }
 }

@@ -25,13 +25,12 @@ public class CustomIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        RemoteViews remoteView = new RemoteViews("com.example.jmw0705.fullscreennotification",R.layout.full_screen_notificiation);
-        //remoteView.setTextViewText(R.id.textView3,"TexT");
-        Log.d(TAG,"GOT PASSED TO THE CORRECT INTENT");
-        Intent newIntent = new Intent(this,AlertMessage.class);
-        PendingIntent pendingIntent = PendingIntent.getService(this,0,newIntent,0);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setSmallIcon(R.drawable.icon)
+        RemoteViews remoteView = new RemoteViews("com.example.jmw0705.fullscreennotification",R.layout.blank_full_screen);
+        int i = 0;
+        Intent newIntent = new Intent(getBaseContext(),AlertMessage.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getBaseContext(),i++,newIntent,0);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext());
+        builder.setSmallIcon(R.mipmap.ic_launcher)
                 .setOngoing(true)
                 .setCategory(Notification.CATEGORY_ALARM)
                 .setFullScreenIntent(pendingIntent,true)
@@ -40,7 +39,6 @@ public class CustomIntentService extends IntentService {
                 .setPriority(Notification.PRIORITY_MAX)
                 .setVibrate(new long[] {500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500})
                 .setCustomHeadsUpContentView(remoteView);
-
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         int temp = 001;
