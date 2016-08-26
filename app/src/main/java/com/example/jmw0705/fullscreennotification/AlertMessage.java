@@ -1,6 +1,7 @@
 package com.example.jmw0705.fullscreennotification;
 
 
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.util.Log;
 public class AlertMessage extends AppCompatActivity {
     Vibrator vibrator;
     MediaPlayer mMediaPlayer;
+    AudioManager audioManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,11 +22,13 @@ public class AlertMessage extends AppCompatActivity {
         mMediaPlayer = new MediaPlayer();
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
         mMediaPlayer = MediaPlayer.create(this,soundUri);
-
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        audioManager = (AudioManager)getSystemService(AUDIO_SERVICE);
+        if(audioManager.getMode()!=AudioManager.MODE_IN_CALL){
+            mMediaPlayer.start();
+        }
         vibrator.vibrate(999999999);
-        //mMediaPlayer.setVolume((float)1.0,(float)1.0);
-        mMediaPlayer.start();
+
 
         setContentView(R.layout.activity_alert_message);
     }
@@ -36,6 +40,7 @@ public class AlertMessage extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Log.d("BackButton","Back Buttons Pressed");
+        mMediaPlayer.stop();
         mMediaPlayer.release();
     }
 }
