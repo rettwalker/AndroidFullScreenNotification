@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="fill_parent"
-    android:layout_height="550dp"
-    >
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="650dp"
+    android:background="#000000">
 
 
     <ImageView
@@ -17,31 +17,27 @@
         android:layout_width="151dp"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:text="URGENT"
+        android:text="Urgent Message"
         android:id="@+id/urgentMessage"
-
-        android:textSize="30sp"
+        android:layout_gravity="center_horizontal"
+        android:textSize="50dp"
         android:textIsSelectable="false"
-        android:textColor="@color/abc_search_url_text_selected"
-        android:textAlignment="center"
-        android:layout_gravity="center_horizontal" />
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/abc_primary_text_material_dark"
+        android:textAlignment="center" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Approval is required!"
-        android:textSize="25sp"
-        android:id="@+id/textView2"
-
-        android:padding="10dp"
-        android:textColor="@color/abc_search_url_text_selected"
-
-        android:textAlignment="center"
-
+        android:text="An approval needs your attention"
+        android:textSize="25dp"
+        android:id="@+id/approvalNeedsYou"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="10dp" />
-
+        android:padding="5dp"
+        android:textColor="@color/abc_primary_text_material_dark"
+        android:textAlignment="center" />
 
 
 </LinearLayout>
