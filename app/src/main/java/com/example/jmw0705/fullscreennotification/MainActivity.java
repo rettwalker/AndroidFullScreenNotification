@@ -16,6 +16,8 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
     final String TAG = "BOOOO";
+    boolean fullScreen = false;
+    int notificationNumber = 0;
 
 
 
@@ -38,6 +40,31 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //Intent i = new Intent("com.example.jmw0705.fullscreennotification.USER_ACTION");
                 //sendBroadcast(i);
+                notificationNumber = 0;
+                sendNotification();
+            }
+        });
+        not2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notificationNumber = 1;
+                fullScreen = true;
+                sendNotification();
+            }
+        });
+        not3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notificationNumber = 2;
+                fullScreen = false;
+                sendNotification();
+            }
+        });
+        not4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notificationNumber = 4;
+                fullScreen = true;
                 sendNotification();
             }
         });
@@ -56,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 Intent newIntent = new Intent(getBaseContext(),AlertMessage.class);
+                newIntent.putExtra("FULLSCREEN",fullScreen);
+                newIntent.putExtra("NOTIFNUM",notificationNumber);
                 startActivity(newIntent);
             }
         }.start();

@@ -2,6 +2,7 @@ package com.example.jmw0705.fullscreennotification;
 
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
@@ -24,31 +25,38 @@ public class AlertMessage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Intent intent = getIntent();
         super.onCreate(savedInstanceState);
         prepareActivityForAlert();
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setContentView(R.layout.blank_full_screen);
 
-        Button dialogButton = (Button) dialog.findViewById(R.id.button);
-        dialogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mMediaPlayer.stop();
-                mMediaPlayer.release();
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,currentVolume,AudioManager.AUDIOFOCUS_LOSS);
-                Log.d("Volume Exit", audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)+"");
-                dialog.dismiss();
+        if(!intent.getExtras().getBoolean("FULLSCREEN")){
+            final Dialog dialog = new Dialog(this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setContentView(R.layout.blank_full_screen);
+            Button dialogButton = (Button) dialog.findViewById(R.id.button);
+            dialogButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            if(audioManager.getMode()!=AudioManager.MODE_IN_CALL){
+                //mMediaPlayer.start();
             }
-        });
-        if(audioManager.getMode()!=AudioManager.MODE_IN_CALL){
-            //mMediaPlayer.start();
-        }
-        vibrator.vibrate(999999999);
+            vibrator.vibrate(999999999);
 
-        dialog.show();
+            dialog.show();
+        } else{
+            if(audioManager.getMode()!=AudioManager.MODE_IN_CALL){
+                //mMediaPlayer.start();
+            }
+            vibrator.vibrate(999999999);
+
+            setContentView(R.layout.full_screen_alert);
+        }
+
     }
 
     // This snippet hides the system bars.
@@ -90,6 +98,10 @@ public class AlertMessage extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
+        mMediaPlayer.stop();
+        mMediaPlayer.release();
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,currentVolume,AudioManager.AUDIOFOCUS_LOSS);
+        Log.d("Volume Exit", audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)+"");
     }
 
 }
