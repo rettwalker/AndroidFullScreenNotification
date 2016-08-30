@@ -14,7 +14,7 @@
         android:layout_marginTop="10dp" />
 
     <TextView
-        android:layout_width="151dp"
+        android:layout_width="329dp"
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:text="Urgent Message"

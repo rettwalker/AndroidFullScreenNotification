@@ -1,6 +1,7 @@
 package com.example.jmw0705.fullscreennotification;
 
 
+import android.app.Dialog;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
@@ -11,7 +12,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import android.view.View;
-
+import android.view.Window;
+import android.widget.Button;
 
 
 public class AlertMessage extends AppCompatActivity {
@@ -23,22 +25,30 @@ public class AlertMessage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        hideSystemUI();
         prepareActivityForAlert();
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setContentView(R.layout.blank_full_screen);
 
+        Button dialogButton = (Button) dialog.findViewById(R.id.button);
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMediaPlayer.stop();
+                mMediaPlayer.release();
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,currentVolume,AudioManager.AUDIOFOCUS_LOSS);
+                Log.d("Volume Exit", audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)+"");
+                dialog.dismiss();
+            }
+        });
         if(audioManager.getMode()!=AudioManager.MODE_IN_CALL){
             //mMediaPlayer.start();
         }
         vibrator.vibrate(999999999);
 
-
-        setContentView(R.layout.activity_alert_message);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        hideSystemUI();
+        dialog.show();
     }
 
     // This snippet hides the system bars.
@@ -80,11 +90,6 @@ public class AlertMessage extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
-        mMediaPlayer.stop();
-        mMediaPlayer.release();
-
-        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,currentVolume,AudioManager.AUDIOFOCUS_LOSS);
-        Log.d("Volume Exit", audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)+"");
     }
 
 }
