@@ -17,7 +17,7 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
     final String TAG = "BOOOO";
     boolean fullScreen = false;
-    int notificationNumber = 0;
+    boolean constantVibrate = false;
 
 
 
@@ -40,14 +40,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //Intent i = new Intent("com.example.jmw0705.fullscreennotification.USER_ACTION");
                 //sendBroadcast(i);
-                notificationNumber = 0;
+                constantVibrate = false;
                 sendNotification();
             }
         });
         not2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                notificationNumber = 1;
+                constantVibrate = false;
                 fullScreen = true;
                 sendNotification();
             }
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         not3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                notificationNumber = 2;
+                constantVibrate = true;
                 fullScreen = false;
                 sendNotification();
             }
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         not4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                notificationNumber = 4;
+                constantVibrate = true;
                 fullScreen = true;
                 sendNotification();
             }
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFinish() {
                 Intent newIntent = new Intent(getBaseContext(),AlertMessage.class);
                 newIntent.putExtra("FULLSCREEN",fullScreen);
-                newIntent.putExtra("NOTIFNUM",notificationNumber);
+                newIntent.putExtra("CONSTVIB",constantVibrate);
                 startActivity(newIntent);
             }
         }.start();

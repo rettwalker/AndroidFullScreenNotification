@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Vibrator;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,9 +26,11 @@ public class AlertMessage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Intent intent = getIntent();
         super.onCreate(savedInstanceState);
+        hideSystemUI();
+        Intent intent = getIntent();
         prepareActivityForAlert();
+        long[] pattern = {0, 100, 100};
 
         if(!intent.getExtras().getBoolean("FULLSCREEN")){
             final Dialog dialog = new Dialog(this);
@@ -39,39 +42,80 @@ public class AlertMessage extends AppCompatActivity {
             dialogButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    vibrator.cancel();
+                    mMediaPlayer.stop();
+                    mMediaPlayer.release();
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,currentVolume,AudioManager.AUDIOFOCUS_LOSS);
+                    Log.d("Volume Exit", audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)+"");
                     dialog.dismiss();
                 }
             });
+
             if(audioManager.getMode()!=AudioManager.MODE_IN_CALL){
                 //mMediaPlayer.start();
             }
-            vibrator.vibrate(999999999);
 
+            if(intent.getExtras().getBoolean("CONSTVIB")){
+                vibrator.vibrate(999999999);
+            } else {
+                vibrator.vibrate(pattern,0);
+            }
             dialog.show();
+
+            setContentView(R.layout.transparent);
         } else{
+
             if(audioManager.getMode()!=AudioManager.MODE_IN_CALL){
                 //mMediaPlayer.start();
             }
-            vibrator.vibrate(999999999);
 
+            if(intent.getExtras().getBoolean("CONSTVIB")){
+                vibrator.vibrate(999999999);
+            } else {
+                vibrator.vibrate(pattern,0);
+            }
+            
             setContentView(R.layout.full_screen_alert);
+            Button fullscreenApproval = (Button) findViewById(R.id.fullscreen_button);
+            fullscreenApproval.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    vibrator.cancel();
+                    mMediaPlayer.stop();
+                    mMediaPlayer.release();
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,currentVolume,AudioManager.AUDIOFOCUS_LOSS);
+                    Log.d("Volume Exit", audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)+"");
+                }
+            });
         }
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        hideSystemUI();
+    }
+
     // This snippet hides the system bars.
     private void hideSystemUI() {
-        View mDecorView = getWindow().getDecorView();
-        // Set the IMMERSIVE flag.
-        // Set the content to appear under the system bars so that the content
-        // doesn't resize when the system bars hide and show.
-        mDecorView.setSystemUiVisibility(
+        //getWindow().addFlags(flags);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
+        getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
                         | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE);
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
 
@@ -97,11 +141,7 @@ public class AlertMessage extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
-        mMediaPlayer.stop();
-        mMediaPlayer.release();
-        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,currentVolume,AudioManager.AUDIOFOCUS_LOSS);
-        Log.d("Volume Exit", audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)+"");
+        super.onBackPressed();
     }
 
 }
