@@ -26,69 +26,58 @@ public class AlertMessage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final Intent intent1 = new Intent(this,MainActivity.class);
         super.onCreate(savedInstanceState);
         hideSystemUI();
         Intent intent = getIntent();
-        prepareActivityForAlert();
-        long[] pattern = {0, 100, 100};
-
-        if(!intent.getExtras().getBoolean("FULLSCREEN")){
-            final Dialog dialog = new Dialog(this);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.setContentView(R.layout.blank_full_screen);
-            Button dialogButton = (Button) dialog.findViewById(R.id.button);
-            dialogButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    vibrator.cancel();
-                    mMediaPlayer.stop();
-                    mMediaPlayer.release();
-                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,currentVolume,AudioManager.AUDIOFOCUS_LOSS);
-                    Log.d("Volume Exit", audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)+"");
-                    dialog.dismiss();
-                }
-            });
-
-            if(audioManager.getMode()!=AudioManager.MODE_IN_CALL){
-                //mMediaPlayer.start();
-            }
-
-            if(intent.getExtras().getBoolean("CONSTVIB")){
-                vibrator.vibrate(999999999);
-            } else {
-                vibrator.vibrate(pattern,0);
-            }
-            dialog.show();
-
-            setContentView(R.layout.transparent);
-        } else{
-
-            if(audioManager.getMode()!=AudioManager.MODE_IN_CALL){
-                //mMediaPlayer.start();
-            }
-
-            if(intent.getExtras().getBoolean("CONSTVIB")){
-                vibrator.vibrate(999999999);
-            } else {
-                vibrator.vibrate(pattern,0);
-            }
-            
-            setContentView(R.layout.full_screen_alert);
-            Button fullscreenApproval = (Button) findViewById(R.id.fullscreen_button);
-            fullscreenApproval.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    vibrator.cancel();
-                    mMediaPlayer.stop();
-                    mMediaPlayer.release();
-                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,currentVolume,AudioManager.AUDIOFOCUS_LOSS);
-                    Log.d("Volume Exit", audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)+"");
-                }
-            });
+        long[] pattern = {0,100,100};
+        long[] pattern0 = {0, 100, 100};
+        long[] pattern1 = {0, 500, 100};
+        long[] pattern2 = {0, 1000, 100};
+        long[] pattern3 = {0, 999999999, 0};
+        Log.d("NUM",intent.getIntExtra("NOTIFICATION_NUM",0)+"");
+        switch (intent.getIntExtra("NOTIFICATION_NUM",0)){
+            case 0:
+                pattern = pattern0;
+                prepareActivityForAlert(0);
+                break;
+            case 1:
+                pattern = pattern1;
+                prepareActivityForAlert(1);
+                break;
+            case 2:
+                pattern = pattern2;
+                prepareActivityForAlert(2);
+                break;
+            case 3:
+                pattern = pattern3;
+                prepareActivityForAlert(3);
+                break;
+            default:break;
         }
 
+        if(audioManager.getMode()!=AudioManager.MODE_IN_CALL){
+            mMediaPlayer.start();
+        }
+
+        vibrator.vibrate(pattern,0);
+            
+        setContentView(R.layout.full_screen_alert);
+        Button fullscreenApproval = (Button) findViewById(R.id.fullscreen_button);
+        fullscreenApproval.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                vibrator.cancel();
+                if(mMediaPlayer.isLooping()){
+                    mMediaPlayer.setLooping(false);
+                }
+                mMediaPlayer.stop();
+                mMediaPlayer.release();
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,currentVolume,AudioManager.AUDIOFOCUS_LOSS);
+                Log.d("Volume Exit", audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)+"");
+                startActivity(intent1);
+            }
+        });
     }
 
     @Override
@@ -121,18 +110,31 @@ public class AlertMessage extends AppCompatActivity {
 
 
 
-    public void prepareActivityForAlert(){
+    public void prepareActivityForAlert(int i){
         mMediaPlayer = new MediaPlayer();
-        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-        mMediaPlayer = MediaPlayer.create(this,soundUri);
+        switch (i) {
+            case 0:
+                mMediaPlayer = MediaPlayer.create(this,RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE));
+                break;
+            case 1:
+                mMediaPlayer = MediaPlayer.create(this,RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM));
+                break;
+            case 2:
+                mMediaPlayer = MediaPlayer.create(this,R.raw.alarm_effect);
+                break;
+            case 3:
+                mMediaPlayer = MediaPlayer.create(this,R.raw.door_buzzer);
+                mMediaPlayer.setLooping(true);
+                break;
+            default:
+                break;
+        }
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         audioManager = (AudioManager)getSystemService(AUDIO_SERVICE);
         currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         Log.d("Volume", currentVolume+"");
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC),AudioManager.AUDIOFOCUS_GAIN);
-
-
     }
 
     @Override
@@ -145,3 +147,37 @@ public class AlertMessage extends AppCompatActivity {
     }
 
 }
+/*
+if(!intent.getExtras().getBoolean("FULLSCREEN")){
+            final Dialog dialog = new Dialog(this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setContentView(R.layout.blank_full_screen);
+            Button dialogButton = (Button) dialog.findViewById(R.id.button);
+            dialogButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    vibrator.cancel();
+                    mMediaPlayer.stop();
+                    mMediaPlayer.release();
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,currentVolume,AudioManager.AUDIOFOCUS_LOSS);
+                    Log.d("Volume Exit", audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)+"");
+                    dialog.dismiss();
+                }
+            });
+
+            if(audioManager.getMode()!=AudioManager.MODE_IN_CALL){
+                //mMediaPlayer.start();
+            }
+
+            if(intent.getExtras().getBoolean("CONSTVIB")){
+                vibrator.vibrate(999999999);
+            } else {
+                vibrator.vibrate(pattern,0);
+            }
+            dialog.show();
+
+            setContentView(R.layout.transparent);
+        } else{
+ */
